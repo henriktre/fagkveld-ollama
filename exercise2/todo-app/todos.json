@@ -1,0 +1,69 @@
+[
+  {
+    "id": "decfbfa3-3eb1-4e1a-895e-3a2fe5e00ac6",
+    "title": "create a plan for the workshop tomorrow",
+    "done": false,
+    "createdAt": "2025-09-16T00:40:19.174Z"
+  },
+  {
+    "id": "0e9ab9fe-4182-4929-aa53-8d08c4e0d9ef",
+    "title": "Review calendar and prioritize top 3 goals",
+    "done": false,
+    "createdAt": "2025-09-16T01:55:51.528Z"
+  },
+  {
+    "id": "d7a2d8e1-684f-43e7-be69-ab6385ffbad6",
+    "title": "Check and triage email / messages",
+    "done": false,
+    "createdAt": "2025-09-16T01:55:53.670Z"
+  },
+  {
+    "id": "a19b415d-554f-4c3b-a2b3-e67eb63bbec3",
+    "title": "Stand-up / daily sync meeting",
+    "done": true,
+    "createdAt": "2025-09-16T01:55:55.605Z",
+    "completedAt": "2025-09-16T01:56:38.291Z"
+  },
+  {
+    "id": "23b51a66-f8cb-4192-9ce7-de5da4ef6784",
+    "title": "Work on primary project task (focus block)",
+    "done": false,
+    "createdAt": "2025-09-16T01:55:57.541Z"
+  },
+  {
+    "id": "538fd5be-48e5-4624-bb5d-86ff6ba902ce",
+    "title": "Short break / walk / hydration",
+    "done": false,
+    "createdAt": "2025-09-16T01:55:59.183Z"
+  },
+  {
+    "id": "11e6be68-7727-447f-b004-2edd49ca656f",
+    "title": "Code review or peer feedback session",
+    "done": false,
+    "createdAt": "2025-09-16T01:56:01.001Z"
+  },
+  {
+    "id": "d9187ce7-8f59-44a9-980f-afc7df659a5e",
+    "title": "Update task tracker / todos",
+    "done": false,
+    "createdAt": "2025-09-16T01:56:02.980Z"
+  },
+  {
+    "id": "360ac15d-333b-4b7c-b9eb-a550b9dfda77",
+    "title": "Lunch and brief disconnect",
+    "done": false,
+    "createdAt": "2025-09-16T01:56:04.577Z"
+  },
+  {
+    "id": "01c7754b-46bb-4230-af7b-b0da4a27480d",
+    "title": "Secondary task or bug fixes",
+    "done": false,
+    "createdAt": "2025-09-16T01:56:07.048Z"
+  },
+  {
+    "id": "45a63b1b-f095-414b-ad55-5b065543f88d",
+    "title": "Wrap-up: summarize progress & plan tomorrow",
+    "done": false,
+    "createdAt": "2025-09-16T01:56:09.122Z"
+  }
+]
