@@ -1,6 +1,5 @@
 import { Ollama } from "ollama";
 import readline from "node:readline";
-
 const MODEL = "gpt-oss:20b";
 const TOTAL_QUESTIONS = 3;
 const ollama = new Ollama();

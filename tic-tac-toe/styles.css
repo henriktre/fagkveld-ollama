@@ -1,0 +1,239 @@
+/* Base styles and variables */
+:root {
+  --primary-color: #6c5ce7;
+  --secondary-color: #a29bfe;
+  --accent-color: #fd79a8;
+  --background-color: #f1f2f6;
+  --text-color: #2d3436;
+  --win-color: #00b894;
+  --hover-color: #dfe6e9;
+  --border-color: #ddd;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  --transition-speed: 0.3s;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.container {
+  text-align: center;
+  max-width: 500px;
+  width: 100%;
+}
+
+h1 {
+  color: var(--primary-color);
+  margin-bottom: 20px;
+  font-size: 2.5rem;
+  text-shadow: 2px 2px 4px var(--shadow-color);
+}
+
+/* Score board styles */
+.score-board {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  background: white;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px var(--shadow-color);
+}
+
+.score {
+  font-size: 1.2rem;
+  font-weight: bold;
+  padding: 10px 15px;
+  border-radius: 8px;
+  transition: var(--transition-speed);
+}
+
+.player-x {
+  color: var(--primary-color);
+  background-color: rgba(108, 92, 231, 0.1);
+}
+
+.player-o {
+  color: var(--accent-color);
+  background-color: rgba(253, 121, 168, 0.1);
+}
+
+/* Reset button */
+.reset-btn {
+  background-color: var(--secondary-color);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: var(--transition-speed);
+  box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+.reset-btn:hover {
+  background-color: #6c5ce7;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px var(--shadow-color);
+}
+
+/* Game status */
+.game-status {
+  font-size: 1.3rem;
+  margin-bottom: 25px;
+  padding: 15px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px var(--shadow-color);
+  font-weight: bold;
+}
+
+/* Game board */
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 10px;
+  margin-bottom: 25px;
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px var(--shadow-color);
+}
+
+/* Cell styles */
+.cell {
+  aspect-ratio: 1;
+  background-color: white;
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 3rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: var(--transition-speed);
+  box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+.cell:hover {
+  background-color: var(--hover-color);
+  transform: scale(1.05);
+}
+
+/* Winning cell animation */
+.cell.win {
+  animation: pulse 1s infinite;
+  background-color: var(--win-color);
+  color: white;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Win message */
+.win-message {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-top: 20px;
+  padding: 15px;
+  border-radius: 10px;
+  background-color: var(--win-color);
+  color: white;
+  display: none;
+  animation: fadeIn 0.5s;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* X and O styles */
+.cell.x::before,
+.cell.o::before {
+  font-size: 2.5rem;
+  transition: var(--transition-speed);
+}
+
+.cell.x::before {
+  content: "X";
+  color: var(--primary-color);
+}
+
+.cell.o::before {
+  content: "O";
+  color: var(--accent-color);
+}
+
+/* Responsive design */
+@media (max-width: 500px) {
+  .container {
+    padding: 10px;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  .score-board {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .cell {
+    font-size: 2.5rem;
+  }
+
+  .game-status {
+    font-size: 1.1rem;
+  }
+}
+
+/* Animation for game pieces */
+.cell.x,
+.cell.o {
+  animation: popIn 0.3s ease-out;
+}
+
+@keyframes popIn {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
