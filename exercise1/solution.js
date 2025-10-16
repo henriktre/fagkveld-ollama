@@ -78,6 +78,17 @@ Guidelines:
   - shortFeedback <= 12 words
 `;
 
+const EVALUATION_SCHEMA = {
+  type: "object",
+  properties: {
+    correct: { type: "boolean" },
+    shortFeedback: { type: "string" },
+    modelAnswer: { type: "string" },
+  },
+  required: ["correct", "shortFeedback", "modelAnswer"],
+  additionalProperties: false,
+};
+
 // ============================================================================
 // STEP 4: Create User Prompt for Answer Evaluation
 // ============================================================================
@@ -117,17 +128,9 @@ async function generateQuestion(previous) {
 //
 // How it works:
 // 1. Call ollama.chat() with the evaluator instructions
-// 2. The AI responds with JSON containing the evaluation
-// 3. Extract the JSON from the response (may have extra text)
-// 4. Parse and return the JSON object
-//
-// JSON extraction technique:
-// - Find the first '{' character
-// - Find the last '}' character
-// - Extract the substring between them
-// - Parse it as JSON
-//
-// This handles cases where the AI includes extra text before/after the JSON
+// 2. Pass a JSON schema via the `format` option
+// 3. Ollama forces the model to emit valid JSON matching the schema
+// 4. Parse and return the JSON object directly
 async function evaluateAnswer(question, userAnswer) {
   const answer = await ollama.chat({
     model: MODEL,
@@ -138,11 +141,16 @@ async function evaluateAnswer(question, userAnswer) {
         content: EVALUATOR_PROMPT(question, userAnswer),
       },
     ],
+    format: EVALUATION_SCHEMA, // Structured outputs ensure valid JSON
   });
 
-  // Extract and parse the JSON from the response
-  const a = answer.message.content;
-  return JSON.parse(a.slice(a.indexOf("{"), a.lastIndexOf("}") + 1));
+  try {
+    return JSON.parse(answer.message.content);
+  } catch (err) {
+    throw new Error(
+      `Could not parse evaluation JSON: ${answer.message.content}`
+    );
+  }
 }
 
 // ============================================================================

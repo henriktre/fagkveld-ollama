@@ -115,15 +115,14 @@ async function generateQuestion(previous) {
  * 2. Pass a messages array with:
  *    - System message with EVALUATOR_INSTRUCTION
  *    - User message with EVALUATOR_PROMPT(question, userAnswer)
- * 3. Parse the response as JSON (it should contain a JSON object)
- * 4. Return the parsed object
+ * 3. Pass a JSON schema via the `format` option so Ollama returns structured JSON
+ * 4. Parse the JSON response and return the resulting object
  *
  * The model should respond with JSON like:
  * {"correct": true/false, "shortFeedback": "...", "modelAnswer": "..."}
  *
- * Tip: You may need to extract the JSON from the response text using:
- * - String methods like indexOf and slice
- * - Or regex to find the JSON object
+ * Tip: Structured outputs eliminate the need for manual JSON extraction. If you
+ * skip the schema, make sure to safely find and parse the JSON from the text.
  */
 async function evaluateAnswer(question, userAnswer) {
   // TODO: implement using ollama.chat() or API fetch
