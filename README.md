@@ -3,6 +3,7 @@
 This repository contains exercises to explore the local Ollama LLM runtime and related tooling.
 
 **Workshop Structure:**
+
 - **exercise0**: Introduction to Ollama API (list models, generate, chat)
 - **exercise1**: Build a trivia quiz with AI question generation and answer evaluation
 - **exercise2**: Natural language todo CLI using Model Context Protocol (MCP)
@@ -101,6 +102,7 @@ node index.js
 **Goal:** Build an AI-powered trivia quiz that generates questions and evaluates answers
 
 This exercise teaches you:
+
 - How to craft effective prompts for specific tasks
 - Working with structured AI responses (JSON)
 - Building interactive CLI applications with AI
@@ -128,37 +130,40 @@ npm start
 node index.js
 ```
 
-**Hints:** 
+**Hints:**
+
 - Look at exercise0 examples for ollama.chat() syntax
 - See the README.md in exercise1 for prompt suggestions
 - The AI should return JSON for answer evaluation
 
 ---
 
-### 5. Exercise 2 (MCP Todo CLI)
+### 5. Exercise 2 (Natural Language Todo CLI)
 
-**Goal:** Build a natural language interface for todo management using Model Context Protocol
+**Goal:** Build a natural language interface for todo management using Ollama's tool calling and MCP
 
 This exercise demonstrates:
-- How AI can map natural language to structured tool calls
-- Integration with external systems via MCP
-- Advanced prompt engineering for tool selection
 
-#### What You'll Implement
+- Native tool calling with Ollama (OpenAI-compatible format)
+- Model Context Protocol (MCP) for standardized tool integration
+- Building conversational interfaces for tool execution
 
-The `planAPI()` function that:
-1. Takes user input like "create a todo to buy milk"
-2. Uses the AI to determine which tool to call (add_todo, list_todos, etc.)
-3. Extracts structured arguments from natural language
+#### How It Works
 
-The MCP server is already implemented - you just need to connect the AI planning layer!
+The completed implementation shows:
+
+1. **MCP Integration** - Connects to a todo server and discovers available tools
+2. **Tool Calling** - Ollama receives tool definitions and automatically maps natural language to function calls
+3. **Execution** - Selected tools are executed via MCP and results displayed
+
+No manual JSON parsing or prompt engineering needed - the model handles everything!
 
 #### Setup
 
 ```bash
 cd exercise2
 npm install
-(cd todo-app && npm install)
+cd todo-app && npm install
 ```
 
 #### Run
@@ -170,13 +175,17 @@ node cli.js
 #### Example Commands
 
 ```
-create a todo to get coffee
 show my todos
-finish the task to get coffee
-get my finished todos
+add a todo to buy groceries
+complete the first todo
+what can you help me with?
 ```
 
-**Bonus Challenge:** Implement the `planLibrary()` function as an alternative using `ollama.chat()`!
+#### Key Concepts
+
+- **Native Tool Calling**: Industry-standard OpenAI function calling format
+- **MCP**: Clean separation between AI decision-making and tool execution
+- **Conversational**: Model can respond with text or call tools as appropriate
 
 ---
 

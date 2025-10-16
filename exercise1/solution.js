@@ -2,7 +2,7 @@
 // ⚠️ SOLUTION FILE - REFERENCE IMPLEMENTATION ⚠️
 // ============================================================================
 // This file contains a complete, working solution to Exercise 1.
-// 
+//
 // If you're stuck and need help, you can refer to this file to see how
 // the different parts can be implemented. However, we encourage you to:
 // 1. Try implementing it yourself first
@@ -53,7 +53,7 @@ const QUESTION_PROMPT = (previous) => {
   // First question - simple prompt
   if (previous.length === 0)
     return `Generate a question. Only the question text.`;
-  
+
   // Subsequent questions - include previous questions to avoid repetition
   const lines = previous.map((q, i) => ` - ${i + 1}. ${q}`);
   return `All previous questions (avoid similar topics):\n${lines.join(
@@ -89,7 +89,7 @@ const EVALUATOR_PROMPT = (question, userAnswer) =>
 // STEP 5: Implement the generateQuestion Function
 // ============================================================================
 // This function generates a trivia question using the Ollama chat API.
-// 
+//
 // How it works:
 // 1. Call ollama.chat() with the model name
 // 2. Pass two messages:
@@ -171,7 +171,7 @@ async function main() {
 
   for (let i = 1; i <= TOTAL_QUESTIONS; i++) {
     console.log(`Question ${i}/${TOTAL_QUESTIONS}`);
-    
+
     // Generate a new question
     const question = await generateQuestion(asked);
     console.log(question);
@@ -185,7 +185,7 @@ async function main() {
 
     // Evaluate the answer using AI
     const evalResult = await evaluateAnswer(question, answer);
-    
+
     // Display results and update score
     if (evalResult.correct) {
       score++;
@@ -196,7 +196,7 @@ async function main() {
         evalResult.modelAnswer || "(no answer)"
       );
     }
-    
+
     // Track this question to avoid repetition
     asked.push(question);
   }

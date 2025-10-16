@@ -16,9 +16,9 @@ const MODEL = "gemma3:4b";
 // Uncomment the code below to see all models you have pulled locally
 // This uses the /tags endpoint to retrieve model information
 //
-// fetch(`${url}/tags`)
-//    .then((res) => res.json())
-//    .then(console.log);
+fetch(`${url}/tags`)
+  .then((res) => res.json())
+  .then(console.log);
 
 // ============================================================================
 // EXAMPLE 2: Simple text generation using the /generate endpoint
@@ -36,7 +36,7 @@ const MODEL = "gemma3:4b";
 //   }),
 // })
 //   .then((res) => res.json())
-//   .then(console.log);
+//   .then((message) => console.log(message.response));
 
 // ============================================================================
 // EXAMPLE 3: Chat completion using the Ollama client library
@@ -45,15 +45,15 @@ const MODEL = "gemma3:4b";
 // System message: Defines the AI's role/personality
 // User message: The actual question or prompt
 //
-ollama
-  .chat({
-    model: MODEL,
-    messages: [
-      { role: "system", content: "you are homer simpson, answer as he would" },
-      {
-        role: "user",
-        content: "why is the sky blue",
-      },
-    ],
-  })
-  .then((res) => console.log(res.message.content));
+// ollama
+//   .chat({
+//     model: MODEL,
+//     messages: [
+//       { role: "system", content: "you are homer simpson, answer as he would" },
+//       {
+//         role: "user",
+//         content: "why is the sky blue",
+//       },
+//     ],
+//   })
+//   .then((res) => console.log(res.message.content));

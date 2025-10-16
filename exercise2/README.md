@@ -1,47 +1,29 @@
 # Exercise 2: Natural Language Todo CLI with MCP
 
-**Time:** ~45-60 minutes  
-**Difficulty:** Intermediate to Advanced
+Build a todo application where users interact using natural language instead of rigid commands.
 
-## Goal
+## What You'll Build
 
-Build a todo application where users can interact using **natural language** instead of structured commands.
+A CLI where you can type:
 
-Instead of typing structured commands:
-```bash
-add-todo "Buy milk"
-list-todos --filter done
-complete-todo abc-123-def
-```
+- "create a todo to buy milk" → `add_todo({title: "buy milk"})`
+- "show me my todos" → `list_todos()`
+- "mark the first task as done" → `complete_todo({id: "..."})`
 
-Users can type naturally:
-```
-create a todo to buy milk
-show me my completed tasks
-mark the milk task as done
-```
+Powered by:
 
-This is powered by:
-- **Model Context Protocol (MCP)**: A standard for AI-tool integration
-- **AI Planning**: Using a language model to map natural language to structured tool calls
+- **Ollama**: Local AI with tool calling support
+- **MCP (Model Context Protocol)**: Standardized AI-tool integration
 
 ---
 
-## Architecture Overview
+## Architecture
 
 ```
-User Input ("create a todo to buy milk")
-    ↓
-AI Model (planAPI function) ← YOUR TASK
-    ↓
-Structured Tool Call ({tool: "add_todo", args: {title: "buy milk"}})
-    ↓
-MCP Server (executes the tool)
-    ↓
-Result (todo created, displayed to user)
+User Input → Ollama (tool calling) → MCP Execution → Result
 ```
 
-The MCP server and tools are **already implemented**. Your job is to implement the AI planning layer!
+The MCP server provides todo tools. Ollama's tool calling maps natural language to function calls.
 
 ---
 
@@ -49,159 +31,131 @@ The MCP server and tools are **already implemented**. Your job is to implement t
 
 - Node.js >= 18
 - [Ollama](https://ollama.com) running locally
-- Recommended model: `ollama pull gpt-oss:20b`
+- A model that supports tool calling:
+  - `ollama pull llama3.2:3b` (recommended, smallest)
+  - `ollama pull llama3.1:8b` (better quality)
+  - `ollama pull mistral` (alternative)
 
 ---
 
 ## Setup
 
-From the `exercise2` directory:
-
 ```bash
 npm install
-(cd todo-app && npm install)
+cd todo-app && npm install
 ```
 
 ---
 
-## Your Task: Implement `planAPI(prompt, tools)`
+## How It Works
 
-This function is the brain of the application. It takes:
-- **Input:** Natural language from the user
-- **Context:** List of available MCP tools
-- **Output:** A structured plan of which tool to call with what arguments
+The completed implementation (`cli.js`) demonstrates:
 
-### Implementation Steps
+1. **MCP Integration** - Connects to a todo server and discovers available tools
+2. **Tool Calling** - Ollama receives tool definitions in OpenAI function calling format
+3. **Natural Language** - Model automatically maps user input to tool calls
+4. **Execution** - Selected tool is executed via MCP and results displayed
 
-1. **Build the tool list** (already done)
-   - Create a formatted string listing all available tools and their descriptions
+### Key Function: `planWithNativeTools()`
 
-2. **Create the system prompt**
-   - Instruct the model to map user input to a tool
-   - Specify the exact JSON format: `{"tool":"name","args":{}}`
-   - Be clear and concise
+This function uses Ollama's native tool calling:
 
-3. **Call Ollama's /generate endpoint**
-   - Use `fetch()` to POST to `${HOST}/api/generate`
-   - Include: model name, combined prompt, stream: false
-   - See `exercise0` for fetch examples
-
-4. **Extract and parse the JSON**
-   - The response will contain JSON somewhere in the text
-   - Use regex or string methods to find it
-   - Parse with `JSON.parse()`
-   - Return the parsed object or null on failure
-
-### Example Tool Mappings
-
-Your function should produce results like:
-
-| User Input | Expected Output |
-|------------|----------------|
-| "show my todos" | `{tool: "list_todos", args: {}}` |
-| "add a task to buy milk" | `{tool: "add_todo", args: {title: "buy milk"}}` |
-| "complete task abc-123" | `{tool: "complete_todo", args: {id: "abc-123"}}` |
-| "remove all done tasks" | `{tool: "clear_completed", args: {}}` |
+- Converts MCP tools to OpenAI function calling format
+- Passes them to `ollama.chat()` with `tools` parameter
+- Model decides which tool to call and extracts parameters
+- Returns structured tool call or conversational response
 
 ---
 
 ## Run
 
-From `exercise2` directory:
-
 ```bash
 node cli.js
 ```
 
-Then start typing! Press Ctrl+C to exit.
-
----
-
-## Usage Examples
-
-Try these natural language commands:
+Try these commands:
 
 ```
-create a todo to get coffee
-add a task to finish the workshop
 show my todos
-what are my tasks?
-finish the coffee task
-mark the workshop task as done
-show me completed tasks
-delete all finished todos
+add a todo to buy groceries
+complete the first todo
+what can you help me with?
 ```
-
----
-
-## Available MCP Tools
-
-The server provides these tools (you don't need to implement them):
-
-- **list_todos** - Returns all current todos
-- **add_todo** (title: string) - Creates a new todo
-- **complete_todo** (id: uuid) - Marks a todo as done
-- **remove_todo** (id: uuid) - Deletes a specific todo  
-- **clear_completed** - Removes all completed todos
 
 ---
 
 ## Environment Variables
 
-- `OLLAMA_MODEL` (default: `gpt-oss:20b`) - Which model to use for planning
-- `OLLAMA_HOST` (default: `http://localhost:11434`) - Ollama server URL
+- `OLLAMA_MODEL` (default: `llama3.2:3b`) - Model to use (must support tool calling)
+- `OLLAMA_HOST` (default: `http://localhost:11434`) - Ollama server
+- `DEBUG=true` - Enable detailed logging
+
+### Tool Calling Support
+
+Not all models support tool calling. Compatible models include:
+
+- **llama3.1** (8b or larger) - Good balance of speed and quality
+- **llama3.2** (3b or larger) - Fastest, still capable
+- **mistral** - Alternative option
+- **qwen2.5** (7b or larger) - Another good option
+
+To use a different model:
+
+```bash
+OLLAMA_MODEL=llama3.1:8b node cli.js
+```
 
 ---
 
-## Bonus Challenge
+## Available Tools
 
-Once `planAPI()` works, try implementing `planLibrary()`:
-- Uses `ollama.chat()` instead of raw `fetch()`
-- Same functionality, cleaner code
-- Uncomment the line in `main()` to test it
+The MCP server provides:
 
-Compare the two approaches and see which you prefer!
-
----
-
-## Tips
-
-1. **Start with simple prompts** - Test with "show todos" before complex ones
-2. **Check the JSON format** - Print the raw response to see what the model returns
-3. **Be specific in your system prompt** - The model needs clear instructions
-4. **Handle errors gracefully** - Not all user input will map perfectly to tools
+- `list_todos` - Returns all todos
+- `add_todo(title)` - Creates a new todo
+- `complete_todo(id)` - Marks todo as done
+- `remove_todo(id)` - Deletes a todo
+- `clear_completed` - Removes all completed todos
 
 ---
 
-## Common Issues
+## Key Concepts
 
-**Issue:** Model returns text instead of JSON  
-**Fix:** Make your system prompt more explicit: "Return ONLY JSON, no other text"
+### OpenAI Function Calling Format
 
-**Issue:** Wrong tool selected  
-**Fix:** Improve tool descriptions or add examples in the prompt
+```javascript
+{
+  type: "function",
+  function: {
+    name: "add_todo",
+    description: "Add a new todo item",
+    parameters: {
+      type: "object",
+      properties: {
+        title: { type: "string", description: "Todo title" }
+      },
+      required: ["title"]
+    }
+  }
+}
+```
 
-**Issue:** Arguments not extracted correctly  
-**Fix:** Give examples of the expected JSON format in your prompt
+### Tool Calling Flow
 
----
-
-## Data Persistence
-
-Todos are stored in `todo-app/todos.json`. You can:
-- Edit this file directly to seed data
-- Delete it to start fresh
-- Set `TODO_DATA_FILE` env var to use a different location
+1. Model receives tool definitions
+2. User provides natural language input
+3. Model decides to call a tool or respond with text
+4. If tool call: returns `{tool: "name", args: {...}}`
+5. We execute the tool via MCP
 
 ---
 
 ## Going Further
 
-After completing the exercise:
 - Try different models and compare accuracy
-- Add more complex tools (priorities, due dates, tags)
-- Implement multi-step planning (chaining multiple tool calls)
-- Add conversation history for context-aware planning
-- Build a web UI instead of CLI
+- Add more tools (priorities, tags, due dates)
+- Implement multi-step planning
+- Add conversation history
+- Build a web UI
 
 ---

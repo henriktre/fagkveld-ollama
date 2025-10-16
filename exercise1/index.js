@@ -29,7 +29,7 @@ const QUESTION_INSTRUCTION = `create an instruction for the model to generate a 
  * Creates a prompt for generating a new trivia question.
  * @param {Array<string>} previous - List of previously asked questions
  * @returns {string} Prompt for the model
- * 
+ *
  * TODO: Replace this placeholder with a prompt that:
  * - Asks for a single trivia question
  * - If there are previous questions, lists them to avoid repetition
@@ -55,7 +55,7 @@ create an instruction for the model to evaluate a trivia answer`;
  * @param {string} question - The trivia question
  * @param {string} userAnswer - The user's answer
  * @returns {string} Prompt for the model
- * 
+ *
  * TODO: Replace this placeholder with a prompt that:
  * - Includes both the question and the user's answer
  * - Asks for the response in JSON format only
@@ -72,18 +72,18 @@ const EVALUATOR_PROMPT = (question, userAnswer) => {
  * Generates a trivia question using the Ollama model.
  * @param {Array<string>} previous - Array of previously asked questions
  * @returns {Promise<string>} The generated trivia question
- * 
- * TODO: Implement this function using ollama.chat()
- * 
+ *
+ * TODO: Implement this function using ollama.chat() or API fetch
+ *
  * Steps to complete:
  * 1. Call ollama.chat() with the MODEL constant
  * 2. Pass a messages array with two messages:
  *    - First message: role "system", content: QUESTION_INSTRUCTION
  *    - Second message: role "user", content: QUESTION_PROMPT(previous)
  * 3. Extract and return the text content from the response
- * 
+ *
  * Documentation: https://github.com/ollama/ollama-js
- * 
+ *
  * Example structure:
  * const response = await ollama.chat({
  *   model: MODEL,
@@ -95,7 +95,7 @@ const EVALUATOR_PROMPT = (question, userAnswer) => {
  * return response.message.content;
  */
 async function generateQuestion(previous) {
-  // TODO: implement using ollama.chat()
+  // TODO: implement using ollama.chat() or API fetch
   return "TODO: implement me";
 }
 
@@ -107,9 +107,9 @@ async function generateQuestion(previous) {
  * @param {string} question - The trivia question that was asked
  * @param {string} userAnswer - The user's answer to evaluate
  * @returns {Promise<{correct: boolean, shortFeedback: string, modelAnswer: string}>}
- * 
- * TODO: Implement this function using ollama.chat()
- * 
+ *
+ * TODO: Implement this function using ollama.chat() or API fetch
+ *
  * Steps to complete:
  * 1. Call ollama.chat() with the MODEL constant
  * 2. Pass a messages array with:
@@ -117,16 +117,16 @@ async function generateQuestion(previous) {
  *    - User message with EVALUATOR_PROMPT(question, userAnswer)
  * 3. Parse the response as JSON (it should contain a JSON object)
  * 4. Return the parsed object
- * 
+ *
  * The model should respond with JSON like:
  * {"correct": true/false, "shortFeedback": "...", "modelAnswer": "..."}
- * 
+ *
  * Tip: You may need to extract the JSON from the response text using:
  * - String methods like indexOf and slice
  * - Or regex to find the JSON object
  */
 async function evaluateAnswer(question, userAnswer) {
-  // TODO: implement using ollama.chat()
+  // TODO: implement using ollama.chat() or API fetch
   return "TODO: implement me";
 }
 
@@ -152,7 +152,7 @@ async function main() {
   // Loop through the total number of questions
   for (let i = 1; i <= TOTAL_QUESTIONS; i++) {
     console.log(`Question ${i}/${TOTAL_QUESTIONS}`);
-    
+
     // Generate a new question, passing previously asked questions
     const question = await generateQuestion(asked);
     console.log(question);
@@ -166,7 +166,7 @@ async function main() {
 
     // Evaluate the answer using the AI model
     const evalResult = await evaluateAnswer(question, answer);
-    
+
     // Display results and update score
     if (evalResult.correct) {
       score++;
@@ -177,7 +177,7 @@ async function main() {
         evalResult.modelAnswer || "(no answer)"
       );
     }
-    
+
     // Keep track of asked questions to avoid repetition
     asked.push(question);
   }
