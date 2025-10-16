@@ -1,6 +1,13 @@
 ## Fagkveld: Getting Started with Ollama
 
-This repository contains small exercises to explore the local Ollama LLM runtime and related tooling (chat API, simple quiz, MCP todo server + CLI).
+This repository contains exercises to explore the local Ollama LLM runtime and related tooling.
+
+**Workshop Structure:**
+- **exercise0**: Introduction to Ollama API (list models, generate, chat)
+- **exercise1**: Build a trivia quiz with AI question generation and answer evaluation
+- **exercise2**: Natural language todo CLI using Model Context Protocol (MCP)
+
+Each exercise includes boilerplate code with TODOs and detailed comments to guide you through implementation.
 
 ---
 
@@ -58,45 +65,118 @@ cd fagkveld-ollama
 
 ---
 
-### 3. Exercise 0 (Intro)
+### 3. Exercise 0 (Introduction)
 
-Open `exercise0/index.js`.
+**Goal:** Get familiar with the Ollama API
 
-The file has three commented example sections—uncomment and run them one at a time:
+Open `exercise0/index.js` to see three example sections demonstrating different ways to interact with Ollama:
 
-1. List local models (tags)
-2. Simple generate request (`/generate` endpoint)
-3. Chat example using the `ollama` JS client
+1. **List local models** - Using the `/tags` endpoint
+2. **Simple text generation** - Using the `/generate` endpoint with raw fetch
+3. **Chat completion** - Using the `ollama` JavaScript client library
 
-### Setup
+Each section is commented out initially. Uncomment and run them one at a time to see how they work.
+
+#### Setup
 
 ```bash
 cd exercise0
-npm i
+npm install
 ```
 
-### run with
+#### Run
 
 ```bash
 npm start
-```
-
-or
-
-```bash
+# or
 node index.js
 ```
 
-Re‑comment before moving on to keep output clean.
+**Tip:** Try modifying the prompts and system messages to see how the AI responds differently!
 
 ---
 
-### 4. What Comes Next
+### 4. Exercise 1 (Trivia Quiz)
 
-Following exercises (see their folders for details):
+**Goal:** Build an AI-powered trivia quiz that generates questions and evaluates answers
 
-- `exercise1`: Trivia quiz powered by a model
-- `exercise2`: MCP todo server + CLI with natural language -> tool planning
+This exercise teaches you:
+- How to craft effective prompts for specific tasks
+- Working with structured AI responses (JSON)
+- Building interactive CLI applications with AI
+
+#### What You'll Implement
+
+1. **generateQuestion()** - Use the AI to create trivia questions
+2. **evaluateAnswer()** - Use the AI to grade user answers
+3. **Prompt engineering** - Write clear instructions for the model
+
+The file includes detailed TODO comments and example code structure to guide you.
+
+#### Setup
+
+```bash
+cd exercise1
+npm install
+```
+
+#### Run
+
+```bash
+npm start
+# or
+node index.js
+```
+
+**Hints:** 
+- Look at exercise0 examples for ollama.chat() syntax
+- See the README.md in exercise1 for prompt suggestions
+- The AI should return JSON for answer evaluation
+
+---
+
+### 5. Exercise 2 (MCP Todo CLI)
+
+**Goal:** Build a natural language interface for todo management using Model Context Protocol
+
+This exercise demonstrates:
+- How AI can map natural language to structured tool calls
+- Integration with external systems via MCP
+- Advanced prompt engineering for tool selection
+
+#### What You'll Implement
+
+The `planAPI()` function that:
+1. Takes user input like "create a todo to buy milk"
+2. Uses the AI to determine which tool to call (add_todo, list_todos, etc.)
+3. Extracts structured arguments from natural language
+
+The MCP server is already implemented - you just need to connect the AI planning layer!
+
+#### Setup
+
+```bash
+cd exercise2
+npm install
+(cd todo-app && npm install)
+```
+
+#### Run
+
+```bash
+node cli.js
+```
+
+#### Example Commands
+
+```
+create a todo to get coffee
+show my todos
+finish the task to get coffee
+get my finished todos
+```
+
+**Bonus Challenge:** Implement the `planLibrary()` function as an alternative using `ollama.chat()`!
 
 ---
 

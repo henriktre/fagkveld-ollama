@@ -1,4 +1,19 @@
 #!/usr/bin/env node
+// ============================================================================
+// MCP Todo Server
+// ============================================================================
+// This file implements a Model Context Protocol (MCP) server that exposes
+// todo management tools. The server runs via stdio and can be connected to
+// by MCP clients (like our CLI in cli.js).
+//
+// Available Tools:
+// - list_todos: Get all todos
+// - add_todo: Create a new todo
+// - complete_todo: Mark a todo as done
+// - remove_todo: Delete a todo
+// - clear_completed: Remove all completed todos
+// ============================================================================
+
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
@@ -10,12 +25,22 @@ import {
   clearCompleted,
 } from "./todo.js";
 
+// Initialize the MCP server
 const server = new McpServer({
   name: "todo-mcp",
   version: "0.1.0",
 });
 
-// List todos
+// ============================================================================
+// Tool Registration
+// ============================================================================
+// Each tool is registered with:
+// - A unique name
+// - Metadata (title, description)
+// - Input schema (what parameters it accepts)
+// - Handler function (what it does)
+
+// List todos tool - returns all current todos
 server.registerTool(
   "list_todos",
   {
@@ -31,7 +56,7 @@ server.registerTool(
   }
 );
 
-// Add todo
+// Add todo tool - creates a new todo with the given title
 server.registerTool(
   "add_todo",
   {
@@ -45,7 +70,7 @@ server.registerTool(
   }
 );
 
-// Complete todo
+// Complete todo tool - marks a todo as done by its ID
 server.registerTool(
   "complete_todo",
   {
@@ -65,7 +90,7 @@ server.registerTool(
   }
 );
 
-// Remove todo
+// Remove todo tool - deletes a todo by its ID
 server.registerTool(
   "remove_todo",
   {
@@ -85,7 +110,7 @@ server.registerTool(
   }
 );
 
-// Clear completed
+// Clear completed tool - removes all completed todos
 server.registerTool(
   "clear_completed",
   {
@@ -101,5 +126,6 @@ server.registerTool(
   }
 );
 
+// Start the server with stdio transport
 const transport = new StdioServerTransport();
 await server.connect(transport);
